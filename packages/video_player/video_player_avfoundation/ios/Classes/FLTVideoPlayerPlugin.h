@@ -6,4 +6,6 @@
 
 @interface FLTVideoPlayerPlugin : NSObject <FlutterPlugin>
 - (instancetype)initWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar;
+- (void)didEnterBackground;
+- (void)willEnterForeground;
 @end

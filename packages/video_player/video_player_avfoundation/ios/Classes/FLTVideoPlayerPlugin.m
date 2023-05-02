@@ -540,11 +540,11 @@ NS_INLINE UIViewController *rootViewController() {
   FLTAVFoundationVideoPlayerApiSetup(registrar.messenger, instance);
 }
 
-+ (void)didEnterBackground {
+- (void)didEnterBackground {
   [player didEnterBackground];
 }
 
-+ (void)willEnterForeground {
+- (void)willEnterForeground {
   [player willEnterForeground];
 }
 
