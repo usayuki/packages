@@ -41,7 +41,7 @@
 // streams (not just iOS 16).  (https://github.com/flutter/flutter/issues/109116).
 // An invisible AVPlayerLayer is used to overwrite the protection of pixel buffers in those streams
 // for issue #1, and restore the correct width and height for issue #2.
-@property(readonly, nonatomic) AVPlayerLayer *playerLayer;
+@property(nonatomic) AVPlayerLayer *playerLayer;
 @property(readonly, nonatomic) CADisplayLink *displayLink;
 @property(nonatomic) FlutterEventChannel *eventChannel;
 @property(nonatomic) FlutterEventSink eventSink;
@@ -257,6 +257,7 @@ NS_INLINE UIViewController *rootViewController() {
   // for issue #1, and restore the correct width and height for issue #2.
   _playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
   [rootViewController().view.layer addSublayer:_playerLayer];
+  playerLayer = _playerLayer;
 
   [self createVideoOutputAndDisplayLink:frameUpdater];
 
@@ -515,6 +516,14 @@ NS_INLINE UIViewController *rootViewController() {
   [_eventChannel setStreamHandler:nil];
 }
 
+- (void)didEnterBackground {
+  _playerLayer = nil;
+}
+
+- (void)willEnterForeground {
+  _playerLayer = playerLayer;
+}
+
 @end
 
 @interface FLTVideoPlayerPlugin () <FLTAVFoundationVideoPlayerApi>
@@ -530,6 +539,14 @@ NS_INLINE UIViewController *rootViewController() {
   FLTVideoPlayerPlugin *instance = [[FLTVideoPlayerPlugin alloc] initWithRegistrar:registrar];
   [registrar publish:instance];
   FLTAVFoundationVideoPlayerApiSetup(registrar.messenger, instance);
+}
+
++ (void)didEnterBackground {
+  [player didEnterBackground];
+}
+
++ (void)willEnterForeground {
+  [player willEnterForeground];
 }
 
 - (instancetype)initWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
