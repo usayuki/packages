@@ -41,7 +41,7 @@
 // streams (not just iOS 16).  (https://github.com/flutter/flutter/issues/109116).
 // An invisible AVPlayerLayer is used to overwrite the protection of pixel buffers in those streams
 // for issue #1, and restore the correct width and height for issue #2.
-@property(nonatomic) AVPlayerLayer *playerLayer;
+@property(readonly, nonatomic) AVPlayerLayer *playerLayer;
 @property(readonly, nonatomic) CADisplayLink *displayLink;
 @property(nonatomic) FlutterEventChannel *eventChannel;
 @property(nonatomic) FlutterEventSink eventSink;
@@ -257,7 +257,6 @@ NS_INLINE UIViewController *rootViewController() {
   // for issue #1, and restore the correct width and height for issue #2.
   _playerLayer = [AVPlayerLayer playerLayerWithPlayer:_player];
   [rootViewController().view.layer addSublayer:_playerLayer];
-  playerLayer = _playerLayer;
 
   [self createVideoOutputAndDisplayLink:frameUpdater];
 
@@ -517,11 +516,11 @@ NS_INLINE UIViewController *rootViewController() {
 }
 
 - (void)didEnterBackground {
-  _playerLayer = nil;
+  [_playerLayer removeFromSuperlayer];
 }
 
 - (void)willEnterForeground {
-  _playerLayer = playerLayer;
+  [rootViewController().view.layer addSublayer:_playerLayer];
 }
 
 @end
