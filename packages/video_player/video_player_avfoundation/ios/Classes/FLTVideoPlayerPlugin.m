@@ -540,14 +540,6 @@ NS_INLINE UIViewController *rootViewController() {
   FLTAVFoundationVideoPlayerApiSetup(registrar.messenger, instance);
 }
 
-- (void)didEnterBackground {
-  [player didEnterBackground];
-}
-
-- (void)willEnterForeground {
-  [player willEnterForeground];
-}
-
 - (instancetype)initWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
   self = [super init];
   NSAssert(self, @"super init cannot be nil");
@@ -556,6 +548,14 @@ NS_INLINE UIViewController *rootViewController() {
   _registrar = registrar;
   _playersByTextureId = [NSMutableDictionary dictionaryWithCapacity:1];
   return self;
+}
+
+- (void)didEnterBackground {
+  [player didEnterBackground];
+}
+
+- (void)willEnterForeground {
+  [player willEnterForeground];
 }
 
 - (void)detachFromEngineForRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
