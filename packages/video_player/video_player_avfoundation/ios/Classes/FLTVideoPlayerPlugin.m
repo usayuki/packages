@@ -517,10 +517,12 @@ NS_INLINE UIViewController *rootViewController() {
 
 - (void)didEnterBackground {
   [_playerLayer removeFromSuperlayer];
+  _player = nil;
 }
 
 - (void)willEnterForeground {
   [rootViewController().view.layer addSublayer:_playerLayer];
+  _player = self.player;
 }
 
 @end
