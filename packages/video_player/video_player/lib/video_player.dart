@@ -752,14 +752,14 @@ class _VideoAppLifeCycleObserver extends Object with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused) {
       if (allowBackgroundPlayback) {
-        _videoPlayerPlatform
+        _videoPlayerPlatform.didEnterBackground(textureId);
       } else {
         _wasPlayingBeforePause = _controller.value.isPlaying;
         _controller.pause();
       }
     } else if (state == AppLifecycleState.resumed) {
       if (allowBackgroundPlayback) {
-
+        _videoPlayerPlatform.willEnterForeground(textureId);
       } else {
         if (_wasPlayingBeforePause) {
           _controller.play();
