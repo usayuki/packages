@@ -103,6 +103,8 @@ NSObject<FlutterMessageCodec> *FLTAVFoundationVideoPlayerApiGetCodec(void);
 - (void)pause:(FLTTextureMessage *)msg error:(FlutterError *_Nullable *_Nonnull)error;
 - (void)setMixWithOthers:(FLTMixWithOthersMessage *)msg
                    error:(FlutterError *_Nullable *_Nonnull)error;
+- (void)didEnterBackground:(FLTTextureMessage *)msg error:(FlutterError *_Nullable *_Nonnull)error;
+- (void)willEnterForeground:(FLTTextureMessage *)msg error:(FlutterError *_Nullable *_Nonnull)error;
 @end
 
 extern void FLTAVFoundationVideoPlayerApiSetup(
