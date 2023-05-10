@@ -358,9 +358,11 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   Future<void> initialize() async {
     final bool allowBackgroundPlayback =
         videoPlayerOptions?.allowBackgroundPlayback ?? false;
-    if (!allowBackgroundPlayback) {
-      _lifeCycleObserver = _VideoAppLifeCycleObserver(this);
-    }
+    _lifeCycleObserver = _VideoAppLifeCycleObserver(
+      this, 
+      allowBackgroundPlayback: allowBackgroundPlayback,
+      textureId: _textureId,
+    );
     _lifeCycleObserver?.initialize();
     _creatingCompleter = Completer<void>();
 
@@ -731,10 +733,16 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 }
 
 class _VideoAppLifeCycleObserver extends Object with WidgetsBindingObserver {
-  _VideoAppLifeCycleObserver(this._controller);
+  _VideoAppLifeCycleObserver(
+    this._controller, {
+    required this.allowBackgroundPlayback,
+    required this.textureId,
+  });
 
   bool _wasPlayingBeforePause = false;
   final VideoPlayerController _controller;
+  final bool allowBackgroundPlayback;
+  final int textureId;
 
   void initialize() {
     _ambiguate(WidgetsBinding.instance)!.addObserver(this);
@@ -743,11 +751,19 @@ class _VideoAppLifeCycleObserver extends Object with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused) {
-      _wasPlayingBeforePause = _controller.value.isPlaying;
-      _controller.pause();
+      if (allowBackgroundPlayback) {
+        _videoPlayerPlatform
+      } else {
+        _wasPlayingBeforePause = _controller.value.isPlaying;
+        _controller.pause();
+      }
     } else if (state == AppLifecycleState.resumed) {
-      if (_wasPlayingBeforePause) {
-        _controller.play();
+      if (allowBackgroundPlayback) {
+
+      } else {
+        if (_wasPlayingBeforePause) {
+          _controller.play();
+        }
       }
     }
   }

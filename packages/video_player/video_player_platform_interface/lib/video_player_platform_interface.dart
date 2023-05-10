@@ -102,6 +102,14 @@ abstract class VideoPlayerPlatform extends PlatformInterface {
   Future<void> setMixWithOthers(bool mixWithOthers) {
     throw UnimplementedError('setMixWithOthers() has not been implemented.');
   }
+
+  Future<void> didEnterBackground(int textureId) {
+    throw UnimplementedError('didEnterBackground() has not been implemented.');
+  }
+
+  Future<void> willEnterForeground(int textureId) {
+    throw UnimplementedError('willEnterForeground() has not been implemented.');
+  }
 }
 
 class _PlaceholderImplementation extends VideoPlayerPlatform {}

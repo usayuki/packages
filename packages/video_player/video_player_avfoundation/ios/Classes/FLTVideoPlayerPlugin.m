@@ -550,14 +550,6 @@ NS_INLINE UIViewController *rootViewController() {
   return self;
 }
 
-- (void)didEnterBackground {
-  [player didEnterBackground];
-}
-
-- (void)willEnterForeground {
-  [player willEnterForeground];
-}
-
 - (void)detachFromEngineForRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
   [self.playersByTextureId.allValues makeObjectsPerformSelector:@selector(disposeSansEventChannel)];
   [self.playersByTextureId removeAllObjects];
@@ -692,6 +684,16 @@ NS_INLINE UIViewController *rootViewController() {
   } else {
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
   }
+}
+
+- (void)didEnterBackground:(FLTTextureMessage *)input {
+  FLTVideoPlayer *player = self.playersByTextureId[input.textureId];
+  [player didEnterBackground];
+}
+
+- (void)willEnterForeground:(FLTTextureMessage *)input {
+  FLTVideoPlayer *player = self.playersByTextureId[input.textureId];
+  [player willEnterForeground];
 }
 
 @end
