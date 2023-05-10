@@ -168,6 +168,16 @@ class AVFoundationVideoPlayer extends VideoPlayerPlatform {
         .setMixWithOthers(MixWithOthersMessage(mixWithOthers: mixWithOthers));
   }
 
+  @override
+  Future<void> didEnterBackground(int textureId) {
+    return _api.didEnterBackground(TextureMessage(textureId: textureId));
+  }
+
+  @override
+  Future<void> willEnterForeground(int textureId) {
+    return _api.willEnterForeground(TextureMessage(textureId: textureId));
+  }
+
   EventChannel _eventChannelFor(int textureId) {
     return EventChannel('flutter.io/videoPlayer/videoEvents$textureId');
   }

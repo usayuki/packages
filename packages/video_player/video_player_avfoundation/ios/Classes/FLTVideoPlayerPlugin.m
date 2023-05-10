@@ -686,12 +686,12 @@ NS_INLINE UIViewController *rootViewController() {
   }
 }
 
-- (void)didEnterBackground:(FLTTextureMessage *)input {
+- (void)didEnterBackground:(FLTTextureMessage *)input error:(FlutterError **)error {
   FLTVideoPlayer *player = self.playersByTextureId[input.textureId];
   [player didEnterBackground];
 }
 
-- (void)willEnterForeground:(FLTTextureMessage *)input {
+- (void)willEnterForeground:(FLTTextureMessage *)input error:(FlutterError **)error {
   FLTVideoPlayer *player = self.playersByTextureId[input.textureId];
   [player willEnterForeground];
 }
